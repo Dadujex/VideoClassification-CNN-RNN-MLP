@@ -16,9 +16,9 @@ Below are examples from three categories:
 3. Putting something next to something
 
 *Note*: GitHub doesn't support video embedding. You can view the sample videos here:
-- [Behind](assets/behind.webm)
-- [In Front](assets/in_front.webm)
-- [Next to](assets/next_to.webm)
+![](assets/behind.gif)
+![](assets/in_front.gif)
+![](assets/next_to.gif)
 
 ## Feature Extraction with CNN
 MobileNet CNN extracts features from each video frame:
@@ -72,14 +72,14 @@ The dataset was split as follows:
 - Video 2: Predicted = "next_to", Actual = "in_front"
 - Video 3: Predicted = "next_to", Actual = "next_to"
 
-*View videos*: [Behind](assets/behind.webm), [In Front](assets/in_front.webm), [Next to](assets/next_to.webm)
+*View videos*: [Behind](assets/behind.gif), [In Front](assets/in_front.gif), [Next to](assets/next_to.gif)
 
 #### CNN+MLP Predictions
 - Video 1: Predicted = "next_to", Actual = "behind"
 - Video 2: Predicted = "next_to", Actual = "in_front"
 - Video 3: Predicted = "in_front", Actual = "next_to"
 
-*View videos*: [Behind](assets/behind.webm), [In Front](assets/in_front.webm), [Next to](assets/next_to.webm)
+*View videos*: [Behind](assets/behind.gif), [In Front](assets/in_front.gif), [Next to](assets/next_to.gif)
 
 ## Conclusion
 Key takeaways:
@@ -90,5 +90,3 @@ Key takeaways:
 ## Code
 The implementation is available in the repository:
 - [CNN+RNN Notebook](cnn_rnn.ipynb)
-
-*Note*: The thesis project is currently private until completion and presentation. Contact me for access or further details.
