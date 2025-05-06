@@ -12,13 +12,11 @@ The dataset is **Something Something v2**, consisting of short video clips acros
 ### Sample Videos
 Below are examples from three categories:
 1. Putting something behind something
-2. Putting something in front of something
-3. Putting something next to something
-
-*Note*: GitHub doesn't support video embedding. You can view the sample videos here:
-![](assets/behind.gif)
-![](assets/in_front.gif)
-![](assets/next_to.gif)
+   ![](assets/behind.gif)
+3. Putting something in front of something
+   ![](assets/in_front.gif)
+5. Putting something next to something
+   ![](assets/next_to.gif)
 
 ## Feature Extraction with CNN
 MobileNet CNN extracts features from each video frame:
