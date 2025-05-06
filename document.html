@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Classification with CNN+RNN and CNN+MLP</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: auto; padding: 20px; }
+        h1, h2, h3, h4 { color: #333; }
+        img { max-width: 100%; height: auto; }
+        video { display: block; margin: 10px 0; }
+        .video-container { display: flex; justify-content: space-between; gap: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Video Classification with CNN+RNN and CNN+MLP: A Comparative Study</h1>
+    
+    <h2>Introduction</h2>
+    <p>Video classification is a challenging task due to the temporal dependencies between frames. Unlike image classification, where individual frames are independent, video classification requires models that can capture sequential patterns. This study aims to compare two approaches:</p>
+    <ul>
+        <li><strong>CNN+RNN:</strong> Uses a pre-trained MobileNet CNN for feature extraction, followed by an RNN model.</li>
+        <li><strong>CNN+MLP:</strong> Uses the same CNN for feature extraction but applies a Multi-Layer Perceptron (MLP) instead of an RNN, treating frames independently.</li>
+    </ul>
+    
+    <h2>Dataset</h2>
+    <p>The dataset used in this project is the <strong>Something Something v2</strong> dataset, which consists of short video clips belonging to various action categories. Each video is represented by 16 frames sampled at equal intervals.</p>
+    
+    <h3>Sample Videos</h3>
+    <p>Below are three example videos from the dataset, showcasing the 3 different categories:</p>
+    <ol>
+      <li>Putting something behind something</li>
+      <li>Putting something in front of something</li>
+      <li>Putting something next to something</li>
+    </ol>
+    <div class="video-container">
+        <video width="300" height="180" controls loop>
+            <source src="assets/behind.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop >
+            <source src="assets/in_front.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop >
+            <source src="assets/next_to.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <h2>Feature Extraction with CNN</h2>
+    <p>The MobileNet CNN is used to extract features from each video frame.
+        <ul>
+            <li><strong>Input to CNN</strong>: A single video frame (RGB, resized to 224x224).</li>
+            <li><strong>CNN Output</strong>: A feature vector of size 320 for each frame.</li>
+        </ul>
+        The extracted features are then used as inputs for the RNN (GRU) or MLP, which attempt to classify the videos.
+    </p>
+    
+    
+    
+
+    <h2>Training Setup</h2>
+    <p>The dataset was split as follows:</p>
+    <ul>
+        <li><strong>Training set:</strong> 800 videos per category. -> 2400 total videos</li>
+        <li><strong>Validation set:</strong> 100 videos per category. -> 300 total videos</li>
+        <li><strong>Test set:</strong> 100 videos per category. -> 300 total videos</li>
+    </ul>
+    
+    <h3>Model Architecture And Training Details</h3>
+    <table border="1" cellspacing="0" cellpadding="5">
+      <thead>
+          <tr>
+              <th>Category</th>
+              <th>CNN+RNN</th>
+              <th>CNN+MLP</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td><strong>Sequence Model</strong></td>
+              <td>2-layer Bidirectional GRU</td>
+              <td>Fully connected MLP</td>
+          </tr>
+          <tr>
+              <td><strong>Input Size</strong></td>
+              <td>320 (CNN feature output)</td>
+              <td>320 (CNN feature output)</td>
+          </tr>
+          <tr>
+              <td><strong>Hidden Size</strong></td>
+              <td>16</td>
+              <td>16 (first layer), 8 (second layer)</td>
+          </tr>
+          <tr>
+              <td><strong>Number of Layers</strong></td>
+              <td>2</td>
+              <td>3 (Fully connected layers)</td>
+          </tr>
+          <tr>
+              <td><strong>Activation Function</strong></td>
+              <td>GRU internal activations</td>
+              <td>ReLU</td>
+          </tr>
+          <tr>
+              <td><strong>Dropout</strong></td>
+              <td>0.35</td>
+              <td>0.3 (after first and second layers)</td>
+          </tr>
+          <tr>
+              <td><strong>Bidirectional</strong></td>
+              <td>Yes</td>
+              <td>No</td>
+          </tr>
+          <tr>
+              <td><strong>Fully Connected Layer</strong></td>
+              <td>Linear(hidden_size * 2 → num_classes)</td>
+              <td>Linear(320 → 16 → 8 → num_classes)</td>
+          </tr>
+          <tr>
+              <td><strong>Loss Function</strong></td>
+              <td>CrossEntropyLoss</td>
+              <td>CrossEntropyLoss</td>
+          </tr>
+          <tr>
+              <td><strong>Optimizer</strong></td>
+              <td>Adam</td>
+              <td>Adam</td>
+          </tr>
+          <tr>
+              <td><strong>Learning Rate</strong></td>
+              <td>0.0025</td>
+              <td>0.001</td>
+          </tr>
+          <tr>
+              <td><strong>Batch Size</strong></td>
+              <td>32</td>
+              <td>32</td>
+          </tr>
+          <tr>
+              <td><strong>Early Stopping</strong></td>
+              <td>Yes (based on validation loss improvement)</td>
+              <td>Yes (based on validation loss improvement)</td>
+          </tr>
+      </tbody>
+  </table>
+  
+
+
+
+    
+    <h2>Results</h2>
+    
+    <h3>Performance Comparison</h3>
+    <p>The following results summarize the accuracy of both models:</p>
+    
+    <h4>CNN+RNN</h4>
+    <img src="assets/rnn.png" width="90%"/>
+    
+    <h4>CNN+MLP</h4>
+    <img src="assets/mlp.png" width="90%"/>
+    
+    
+    <h3>Confusion Matrices</h3>
+    
+    <h4>CNN+RNN Model</h4>
+    <img src="assets/confusion_rnn.png" alt="Confusion Matrix for CNN+RNN Model">
+
+    
+    <h4>CNN+MLP Model</h4>
+    <img src="assets/confusion_mlp.png" alt="Confusion Matrix for CNN+MLP Model">
+
+    <h3>Example Predictions</h3>
+    
+    <h4>CNN+RNN Predictions:</h4>
+    <p>The predictions are from a model that achived 57.33% test accuracy</p>
+    <ul>
+        <li>Video 1: Predicted Class = "behind", Actual Class = "behind"</li>
+        <li>Video 2: Predicted Class = "next_to", Actual Class = "in_front"</li>
+        <li>Video 3: Predicted Class = "next_to", Actual Class = "next_to"</li>
+    </ul>
+    <div class="video-container">
+        <video width="300" height="180" controls loop>
+            <source src="assets/behind.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop>
+            <source src="assets/in_front.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop>
+            <source src="assets/next_to.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <h4>CNN+MLP Predictions:</h4>
+    <p>The predictions are from a model that achived 44.33% test accuracy</p>
+    <ul>
+        <li>Video 1: Predicted Class = "next_to", Actual Class = "behind"</li>
+        <li>Video 2: Predicted Class = "next_to", Actual Class = "in_front"</li>
+        <li>Video 3: Predicted Class = "in_front", Actual Class = "next_to"</li>
+    </ul>
+    <div class="video-container">
+        <video width="300" height="180" controls loop>
+            <source src="assets/behind.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop>
+            <source src="assets/in_front.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <video width="300" height="180" controls loop>
+            <source src="assets/next_to.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <h2>Conclusion</h2>
+    <p>In this study, the CNN+RNN model demonstrated better performance compared to the CNN+MLP model. The key takeaways are:</p>
+    <ul>
+        <li><strong>Sequences matter:</strong> The RNN model performed better because it could recognize patterns across multiple frames.</li>
+        <li><strong>MLP struggles with time:</strong> Since the MLP treated each frame independently, it failed to capture the relationships between frames, leading to lower accuracy.</li>
+        <li><strong>Potential improvements:</strong> Future research could explore transformer-based models, which have shown promise in handling sequential data more effectively.</li>
+    </ul>
+</body>
+</html>
